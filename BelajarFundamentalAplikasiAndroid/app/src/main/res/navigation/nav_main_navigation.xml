@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main_navigation"
+    app:startDestination="@id/navHomeFragment">
+
+    <fragment
+        android:id="@+id/navHomeFragment"
+        android:name="com.ryandhikaba.belajarfundamentalaplikasiandroid.MyNavigation.NavHomeFragment"
+        android:label="fragment_nav_home"
+        tools:layout="@layout/fragment_nav_home" >
+        <action
+            android:id="@+id/action_navHomeFragment_to_navCategoryFragment"
+            app:destination="@id/navCategoryFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_navHomeFragment_to_navProfileActivity"
+            app:destination="@id/navProfileActivity"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navCategoryFragment"
+        android:name="com.ryandhikaba.belajarfundamentalaplikasiandroid.MyNavigation.NavCategoryFragment"
+        android:label="fragment_nav_category"
+        tools:layout="@layout/fragment_nav_category" >
+        <action
+            android:id="@+id/action_navCategoryFragment_to_navDetailCategoryFragment"
+            app:destination="@id/navDetailCategoryFragment" />
+    </fragment>
+
+    <activity
+        android:id="@+id/navProfileActivity"
+        android:name="com.ryandhikaba.belajarfundamentalaplikasiandroid.MyNavigation.NavProfileActivity"
+        android:label="activity_nav_profile"
+        tools:layout="@layout/activity_nav_profile" />
+    <fragment
+        android:id="@+id/navDetailCategoryFragment"
+        android:name="com.ryandhikaba.belajarfundamentalaplikasiandroid.MyNavigation.NavDetailCategoryFragment"
+        android:label="fragment_nav_detail_category"
+        tools:layout="@layout/fragment_nav_detail_category" >
+        <argument
+            android:name="name"
+            app:argType="string"
+            android:defaultValue="default name" />
+        <argument
+            android:name="stock"
+            app:argType="long"
+            android:defaultValue="0L" />
+        <action
+            android:id="@+id/action_navDetailCategoryFragment_to_navHomeFragment"
+            app:destination="@id/navHomeFragment"
+            app:popUpTo="@id/navHomeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+</navigation>
