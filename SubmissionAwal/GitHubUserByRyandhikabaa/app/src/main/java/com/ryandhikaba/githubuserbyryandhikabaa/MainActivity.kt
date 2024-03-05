@@ -1,6 +1,7 @@
 package com.ryandhikaba.githubuserbyryandhikabaa
 
 import android.app.usage.UsageEvents
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -8,7 +9,9 @@ import android.view.KeyEvent
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import android.widget.SearchView
 import android.widget.Toast
 import android.widget.Toolbar
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -26,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private var username: String = "ryan"
+    private var username: String = "a"
 
     companion object {
         private const val TAG = "MainActivity ||  "
@@ -46,6 +49,34 @@ class MainActivity : AppCompatActivity() {
             showLoading(true)
 
             fetchUsers(username)
+
+            svUsers.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    hideKeyboard()
+                    svUsers.clearFocus()
+                    query?.let { fetchUsers(it) }
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    // Panggil fungsi untuk menangani perubahan teks query hanya jika panjang teks lebih dari 3 karakter
+                    if (newText?.length ?: 0 >= 3) {
+                        newText?.let {
+                            fetchUsers(newText)
+                        }
+                    }
+
+                    if (newText.isNullOrEmpty()) {
+                        hideKeyboard()
+                        svUsers.clearFocus()
+                        svUsers.isFocusable = false
+                        svUsers.isFocusableInTouchMode = false
+                        fetchUsers(username)
+                    }
+                    return true
+                }
+            })
+
         }
 
     }
@@ -86,6 +117,13 @@ class MainActivity : AppCompatActivity() {
             binding.divLoading.visibility = View.VISIBLE
         } else {
             binding.divLoading.visibility = View.GONE
+        }
+    }
+
+    private fun hideKeyboard() {
+        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        currentFocus?.let {
+            inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
         }
     }
 

@@ -17,35 +17,6 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rectangle_bottom_rounded">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/divTop2"
-                android:visibility="gone">
-                <com.google.android.material.search.SearchBar
-                    android:id="@+id/searchBar"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:hint="@string/searchbar_hint"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-                </com.google.android.material.search.SearchBar>
-
-                <com.google.android.material.search.SearchView
-                    android:id="@+id/searchView"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:hint="@string/searchbar_hint"
-                    app:layout_anchor="@id/searchBar"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-                </com.google.android.material.search.SearchView>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
             <LinearLayout
                 android:id="@+id/divTop2"
                 android:layout_width="match_parent"
@@ -72,6 +43,7 @@
                     android:textStyle="italic" />
 
                 <SearchView
+                    android:id="@+id/svUsers"
                     android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
