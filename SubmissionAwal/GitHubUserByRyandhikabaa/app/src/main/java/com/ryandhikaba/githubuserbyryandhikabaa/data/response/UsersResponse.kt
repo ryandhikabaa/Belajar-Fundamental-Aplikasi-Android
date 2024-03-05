@@ -4,11 +4,17 @@ import com.google.gson.annotations.SerializedName
 
 data class UsersResponse(
 
-	@field:SerializedName("UsersResponse")
-	val usersResponse: List<UsersResponseItem>
+	@field:SerializedName("total_count")
+	val totalCount: Int,
+
+	@field:SerializedName("incomplete_results")
+	val incompleteResults: Boolean,
+
+	@field:SerializedName("items")
+	val items: List<ItemsItem>
 )
 
-data class UsersResponseItem(
+data class ItemsItem(
 
 	@field:SerializedName("gists_url")
 	val gistsUrl: String,
@@ -37,6 +43,9 @@ data class UsersResponseItem(
 	@field:SerializedName("subscriptions_url")
 	val subscriptionsUrl: String,
 
+	@field:SerializedName("score")
+	val score: Any,
+
 	@field:SerializedName("received_events_url")
 	val receivedEventsUrl: String,
 
@@ -64,5 +73,3 @@ data class UsersResponseItem(
 	@field:SerializedName("organizations_url")
 	val organizationsUrl: String
 )
-
-
