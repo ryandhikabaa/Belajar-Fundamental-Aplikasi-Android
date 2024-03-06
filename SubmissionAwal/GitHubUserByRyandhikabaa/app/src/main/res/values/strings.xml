@@ -12,5 +12,10 @@ Suspendisse euismod urna id quam feugiat, ac lacinia massa auctor. Aenean lobort
 Curabitur et convallis arcu. Phasellus tempor lectus at consequat tempus. Ut dolor nulla, feugiat ut mollis quis, auctor porta sapien. Pellentesque cursus urna ut iaculis hendrerit. Nunc eget mauris dui. Duis vel sagittis ex. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin justo mi, interdum at purus ac, ultricies lacinia eros. Vestibulum ac elit sit amet neque faucibus cursus sed eu augue. Fusce efficitur fermentum nisl. Mauris suscipit auctor nisl consequat laoreet.
 
 Suspendisse euismod urna id quam feugiat, ac lacinia massa auctor. Aenean lobortis dolor lacus, a vestibulum quam rutrum in. Morbi quis elit turpis. Fusce at velit id eros tempor tempus eget nec felis. Quisque vestibulum ligula nisl, ac placerat massa bibendum nec. Ut ac hendrerit enim. Donec eget ex vel magna mollis vehicula. Aenean turpis turpis, lobortis in maximus eleifend, cursus ut dolor. Etiam iaculis urna ipsum, ut gravida dui placerat nec. Sed vulputate, mi vitae venenatis molestie, eros augue mollis nisl, eu ultricies dui tortor vitae neque. Etiam et elit placerat, vehicula purus sed, mollis urna. Cras vitae blandit augue, sed lobortis nisl. Donec dictum convallis tellus sed varius. Nulla bibendum rhoncus efficitur. Donec accumsan consectetur enim, eu tristique mauris posuere quis.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="tab_text_followers">Followers</string>
+    <string name="tab_text_following">Following</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 </resources>

@@ -58,4 +58,5 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
     implementation ("de.hdodenhof:circleimageview:3.1.0")
     implementation ("com.github.amarjain07:StickyScrollView:1.0.3")
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
 }

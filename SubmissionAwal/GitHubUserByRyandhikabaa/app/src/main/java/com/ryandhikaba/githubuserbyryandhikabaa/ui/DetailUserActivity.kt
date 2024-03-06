@@ -8,7 +8,12 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.ryandhikaba.githubuserbyryandhikabaa.R
 import com.ryandhikaba.githubuserbyryandhikabaa.data.response.DetailUserRespon
 import com.ryandhikaba.githubuserbyryandhikabaa.data.response.ItemsItem
@@ -16,6 +21,7 @@ import com.ryandhikaba.githubuserbyryandhikabaa.data.response.UsersResponse
 import com.ryandhikaba.githubuserbyryandhikabaa.data.retrofit.ApiConfig
 import com.ryandhikaba.githubuserbyryandhikabaa.databinding.ActivityDetailUserBinding
 import com.ryandhikaba.githubuserbyryandhikabaa.databinding.ActivityMainBinding
+import com.ryandhikaba.githubuserbyryandhikabaa.ui.adapter.SectionsPagerAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,6 +34,12 @@ class DetailUserActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "RBA:DetailUsereActivity ||  "
+
+        @StringRes
+        private val TAB_TITLES = intArrayOf(
+            R.string.tab_text_followers,
+            R.string.tab_text_following
+        )
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,11 +52,23 @@ class DetailUserActivity : AppCompatActivity() {
 
             // Periksa apakah objek Service tidak null
             if (users != null) {
+                ivBack.setOnClickListener(View.OnClickListener { finish() })
                 fetchDetailUsers(users.login)
+                val sectionsPagerAdapter = SectionsPagerAdapter(this@DetailUserActivity)
+                sectionsPagerAdapter.username = users.login
+                val viewPager: ViewPager2 = findViewById(R.id.view_pager)
+                viewPager.adapter = sectionsPagerAdapter
+                val tabs: TabLayout = findViewById(R.id.tabs)
+//                tabs.setSelectedTabIndicatorColor(ContextCompat.getColor(this@DetailUserActivity, R.color.colorAccent))
+                TabLayoutMediator(tabs, viewPager) { tab, position ->
+                    tab.text = resources.getString(TAB_TITLES[position])
+                }.attach()
             } else {
                 Toast.makeText(this@DetailUserActivity, "Opps!, Data Service Tidak Ditemukan", Toast.LENGTH_SHORT).show()
                 finish()
             }
+
+
         }
     }
 
@@ -93,4 +117,5 @@ class DetailUserActivity : AppCompatActivity() {
             binding.divLoading.visibility = View.GONE
         }
     }
+
 }
