@@ -1,6 +1,7 @@
 package com.ryandhikaba.githubuserbyryandhikabaa.ui
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ryandhikaba.githubuserbyryandhikabaa.adapter.UsersAdapter
+import com.ryandhikaba.githubuserbyryandhikabaa.ui.adapter.UsersAdapter
 import com.ryandhikaba.githubuserbyryandhikabaa.data.response.ItemsItem
 import com.ryandhikaba.githubuserbyryandhikabaa.data.response.UsersResponse
 import com.ryandhikaba.githubuserbyryandhikabaa.data.retrofit.ApiConfig
@@ -39,7 +40,6 @@ class MainActivity : AppCompatActivity() {
             binding.rvusers.layoutManager = layoutManager
             val itemDecoration = DividerItemDecoration(this@MainActivity, layoutManager.orientation)
             binding.rvusers.addItemDecoration(itemDecoration)
-            showLoading(true)
 
             fetchUsers(username)
 
@@ -103,6 +103,13 @@ class MainActivity : AppCompatActivity() {
         val adapter = UsersAdapter()
         adapter.submitList(usersItem)
         binding.rvusers.adapter = adapter
+        adapter.setOnItemClickCallback(object : UsersAdapter.OnItemClickCallback {
+            override fun onItemClicked(data: ItemsItem) {
+                val intent = Intent(this@MainActivity, DetailUserActivity::class.java)
+                intent.putExtra("USERS_CLICKED", data)
+                startActivity(intent)
+            }
+        })
     }
 
     private fun showLoading(isLoading: Boolean) {
