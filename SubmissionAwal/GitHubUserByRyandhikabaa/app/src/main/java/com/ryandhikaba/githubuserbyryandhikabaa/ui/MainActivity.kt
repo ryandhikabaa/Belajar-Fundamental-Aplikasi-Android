@@ -1,19 +1,12 @@
-package com.ryandhikaba.githubuserbyryandhikabaa
+package com.ryandhikaba.githubuserbyryandhikabaa.ui
 
-import android.app.usage.UsageEvents
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.KeyEvent
-import android.view.MenuItem
-import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.ImageView
 import android.widget.SearchView
-import android.widget.Toast
-import android.widget.Toolbar
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ryandhikaba.githubuserbyryandhikabaa.adapter.UsersAdapter
@@ -32,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     private var username: String = "a"
 
     companion object {
-        private const val TAG = "MainActivity ||  "
+        private const val TAG = "RBA:MainActivity ||  "
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

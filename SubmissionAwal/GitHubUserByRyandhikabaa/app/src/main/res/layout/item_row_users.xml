@@ -32,7 +32,6 @@
             android:layout_gravity="center"
             android:layout_margin="10dp">
 
-            <!-- Nama Layanan -->
             <TextView
                 android:id="@+id/tvNameUsers"
                 android:layout_width="wrap_content"

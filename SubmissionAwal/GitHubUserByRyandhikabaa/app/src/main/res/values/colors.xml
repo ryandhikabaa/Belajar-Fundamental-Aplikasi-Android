@@ -7,6 +7,9 @@
     <color name="orangeBareskrim2">#CFA33F</color>
     <color name="yellowBareskrim">#FFF200</color>
 
+    <color name="greyMudaRBA">#AAA9A8</color>
+    <color name="redRBA">#CE0641</color>
+
 
     <color name="blueDark">#1F3F6F</color>
     <color name="softGrey1">#F4F3F3</color>
@@ -38,6 +41,7 @@
     <color name="colorGreen">#15CF74</color>
     <color name="notWhiteAtAll">#FBFBFB</color>
     <color name="grey">#979797</color>
+    <color name="greyMuda">#BFBFBF</color>
     <color name="greyDark">#575656</color>
     <color name="colorWhiteTransparent">#d1ffffff</color>
     <color name="colorCalmGrey">#76787C</color>
