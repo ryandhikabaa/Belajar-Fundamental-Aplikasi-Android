@@ -183,6 +183,8 @@
                         app:tabIndicatorFullWidth="true"
                         app:tabIndicatorHeight="3dp"
                         app:tabMode="fixed"
+                        app:tabMaxWidth="0dp"
+                        app:tabGravity="fill"
                         />
 
                 <androidx.viewpager2.widget.ViewPager2

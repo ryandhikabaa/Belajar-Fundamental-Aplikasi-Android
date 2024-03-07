@@ -50,7 +50,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         mainViewModel.snackbarText.observe(this) {
-//            Snackbar.make(window.decorView.rootView, it, Snackbar.LENGTH_SHORT).show()
 
             it.getContentIfNotHandled()?.let { snackBarText ->
                 Snackbar.make(
@@ -67,8 +66,6 @@ class MainActivity : AppCompatActivity() {
             binding.rvusers.layoutManager = layoutManager
             val itemDecoration = DividerItemDecoration(this@MainActivity, layoutManager.orientation)
             binding.rvusers.addItemDecoration(itemDecoration)
-
-//            fetchUsers(username)
 
             svUsers.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
@@ -102,33 +99,6 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
-//    private fun fetchUsers(username: String){
-//        showLoading(true)
-//        val client = ApiConfig.getApiService().getUsers(username)
-//        client.enqueue(object : Callback<UsersResponse>{
-//            override fun onResponse(
-//                call: Call<UsersResponse>,
-//                response: Response<UsersResponse>
-//            ) {
-//                showLoading(false)
-//                if (response.isSuccessful) {
-//                    val responseBody = response.body()
-//                    if (responseBody != null) {
-//                        setUsersData(responseBody.items)
-//                    }
-//                } else {
-//                    Log.e(TAG, "onFailure respon: ${response.message()}")
-//                    Snackbar.make(binding.root, Config.Constants.OPPS + " ${response.message()}", Snackbar.LENGTH_SHORT).show()
-//                }
-//            }
-//            override fun onFailure(call: Call<UsersResponse>, t: Throwable) {
-//                showLoading(false)
-//                Log.e(TAG, "onFailure error: ${t.message}")
-//                Snackbar.make(binding.root, Config.Constants.EROR_JARINGAN_ON_ERROR, Snackbar.LENGTH_SHORT).show()
-//            }
-//        })
-//    }
 
     private fun setUsersData(usersItem: List<ItemsItem>) {
         val adapter = UsersAdapter()

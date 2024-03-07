@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
@@ -22,6 +24,7 @@ import com.ryandhikaba.githubuserbyryandhikabaa.data.response.UsersResponse
 import com.ryandhikaba.githubuserbyryandhikabaa.data.retrofit.ApiConfig
 import com.ryandhikaba.githubuserbyryandhikabaa.databinding.ActivityDetailUserBinding
 import com.ryandhikaba.githubuserbyryandhikabaa.databinding.ActivityMainBinding
+import com.ryandhikaba.githubuserbyryandhikabaa.ui.ViewModel.DetailUserViewModel
 import com.ryandhikaba.githubuserbyryandhikabaa.ui.adapter.SectionsPagerAdapter
 import com.ryandhikaba.githubuserbyryandhikabaa.utils.Config
 import retrofit2.Call
@@ -48,23 +51,59 @@ class DetailUserActivity : AppCompatActivity() {
         binding = ActivityDetailUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val detaiMainViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(
+            DetailUserViewModel::class.java)
+
+        detaiMainViewModel.isLoading.observe(this) {
+            showLoading(it)
+        }
+
+        detaiMainViewModel.snackbarText.observe(this) {
+            it.getContentIfNotHandled()?.let { snackBarText ->
+                Snackbar.make(
+                    window.decorView.rootView,
+                    snackBarText,
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
+        }
+
         with(binding){
             // Terima objek Service dari Intent
             val users: ItemsItem? = intent.getParcelableExtra("USERS_CLICKED")
 
             // Periksa apakah objek Service tidak null
             if (users != null) {
+
+                detaiMainViewModel.fetchDetailUsers(users.login)
+
+                detaiMainViewModel.detailUserRespon.observe(this@DetailUserActivity, Observer { detailUser ->
+                    // Perbarui antarmuka pengguna (UI) dengan detail pengguna yang diterima
+                    detailUser?.let {
+                        binding.tvNameUsers.text = (it.name ?: it.login).toString()
+                        Glide.with(binding.root)
+                            .load(it.avatarUrl)
+                            .into(binding.ivUsers)
+                        binding.tvUsername.text = "@${it.login}"
+                        binding.tvCountFollowers.text = it.followers?.toString() ?: "0"
+                        binding.tvCountFollowing.text = it.following?.toString() ?: "0"
+                        val originalDateTime = LocalDateTime.parse(it.createdAt, DateTimeFormatter.ISO_DATE_TIME)
+                        val formattedDate = originalDateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+                        binding.tvSince.text = "Since Github From : $formattedDate"
+                    }
+                })
+
                 ivBack.setOnClickListener(View.OnClickListener { finish() })
-                fetchDetailUsers(users.login)
+
                 val sectionsPagerAdapter = SectionsPagerAdapter(this@DetailUserActivity)
                 sectionsPagerAdapter.username = users.login
                 val viewPager: ViewPager2 = findViewById(R.id.view_pager)
                 viewPager.adapter = sectionsPagerAdapter
                 val tabs: TabLayout = findViewById(R.id.tabs)
-//                tabs.setSelectedTabIndicatorColor(ContextCompat.getColor(this@DetailUserActivity, R.color.colorAccent))
                 TabLayoutMediator(tabs, viewPager) { tab, position ->
                     tab.text = resources.getString(TAB_TITLES[position])
                 }.attach()
+
             } else {
                 Toast.makeText(this@DetailUserActivity, "Opps!, Data Service Tidak Ditemukan", Toast.LENGTH_SHORT).show()
                 finish()
@@ -74,44 +113,7 @@ class DetailUserActivity : AppCompatActivity() {
         }
     }
 
-    private fun fetchDetailUsers(username: String){
-        showLoading(true)
-        val client = ApiConfig.getApiService().getDetailUser(username)
-        client.enqueue(object : Callback<DetailUserRespon> {
-            override fun onResponse(
-                call: Call<DetailUserRespon>,
-                response: Response<DetailUserRespon>
-            ) {
-                showLoading(false)
-                if (response.isSuccessful) {
-                    val responseBody = response.body()
-                    if (responseBody != null) {
-                        binding.tvNameUsers.text = responseBody.name?.toString() ?: responseBody.login
-                        Glide.with(binding.root)
-                            .load(responseBody.avatarUrl)
-                            .into(binding.ivUsers)
-                        binding.tvUsername.text = "@${responseBody.login}"
-                        binding.tvCountFollowers.text = responseBody.followers?.toString() ?: "0"
-                        binding.tvCountFollowing.text = responseBody.following?.toString() ?: "0"
-                        // Parsing tanggal dari string asal
-                        val originalDateTime = LocalDateTime.parse(responseBody.createdAt, DateTimeFormatter.ISO_DATE_TIME)
-                        // Mengubah format tanggal menjadi format yang diinginkan
-                        val formattedDate = originalDateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
-                        binding.tvSince.text = "Since Github From : $formattedDate"
-                        showLoading(false)
-                    }
-                } else {
-                    Log.e(TAG, "onFailure respon: ${response}")
-                    Snackbar.make(binding.root, Config.Constants.OPPS + " ${response.message()}", Snackbar.LENGTH_SHORT).show()
-                }
-            }
-            override fun onFailure(call: Call<DetailUserRespon>, t: Throwable) {
-                showLoading(false)
-                Log.e(TAG, "onFailure error: ${t.message}")
-                Snackbar.make(binding.root, Config.Constants.EROR_JARINGAN_ON_ERROR, Snackbar.LENGTH_SHORT).show()
-            }
-        })
-    }
+
 
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
