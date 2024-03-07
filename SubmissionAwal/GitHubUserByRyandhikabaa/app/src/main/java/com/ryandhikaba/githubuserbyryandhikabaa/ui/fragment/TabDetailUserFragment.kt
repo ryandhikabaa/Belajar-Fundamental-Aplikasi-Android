@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -18,6 +19,8 @@ import com.ryandhikaba.githubuserbyryandhikabaa.data.retrofit.ApiConfig
 import com.ryandhikaba.githubuserbyryandhikabaa.databinding.FragmentTabDetailUserBinding
 import com.ryandhikaba.githubuserbyryandhikabaa.ui.DetailUserActivity
 import com.ryandhikaba.githubuserbyryandhikabaa.ui.MainActivity
+import com.ryandhikaba.githubuserbyryandhikabaa.ui.ViewModel.MainViewModel
+import com.ryandhikaba.githubuserbyryandhikabaa.ui.ViewModel.TabDetailUserViewModel
 import com.ryandhikaba.githubuserbyryandhikabaa.ui.adapter.UsersAdapter
 import com.ryandhikaba.githubuserbyryandhikabaa.utils.Config
 import retrofit2.Call
@@ -50,6 +53,40 @@ class TabDetailUserFragment : Fragment() {
             username = it.getString(ARG_USERNAME)
         }
 
+        val tabDetailUserViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(
+            TabDetailUserViewModel::class.java)
+
+        tabDetailUserViewModel.isLoading.observe(viewLifecycleOwner) {
+            showLoading(it)
+        }
+
+        tabDetailUserViewModel.showRecycler.observe(viewLifecycleOwner) {
+            showRecycler(it)
+        }
+
+        tabDetailUserViewModel.showKeterangan.observe(viewLifecycleOwner) {
+            showKeterangan(it)
+        }
+
+        tabDetailUserViewModel.listItem.observe(viewLifecycleOwner) { usersList ->
+            setUsersData(usersList)
+            usersList?.let {
+                if (it.size == 0){
+                        binding.tvKeterangan.visibility = View.VISIBLE
+                }
+            }
+        }
+
+        tabDetailUserViewModel.snackbarText.observe(viewLifecycleOwner) {
+
+            it.getContentIfNotHandled()?.let { snackBarText ->
+                Snackbar.make(
+                    requireView(),
+                    snackBarText,
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
+        }
 
         with(binding){
             rvusers.isNestedScrollingEnabled = false
@@ -59,90 +96,94 @@ class TabDetailUserFragment : Fragment() {
             binding.rvusers.addItemDecoration(itemDecoration)
 
             if (position == 1){
-                fetchFollowers("$username")
+                tabDetailUserViewModel.fetchFollowers("$username")
+                binding.tvKeterangan.text = "Tidak Memiliki Followers"
             } else {
-                fetchFollowing("$username")
+//                fetchFollowing("$username")
+                tabDetailUserViewModel.fetchFollowing("$username")
+                binding.tvKeterangan.text = "Tidak Memiliki Following"
+
             }
         }
     }
 
-    private fun fetchFollowers(username: String){
-        showLoading(true)
-        showRecycler(false)
-        showKeterangan(false)
-        val client = ApiConfig.getApiService().getFollowers(username)
-        client.enqueue(object : Callback<List<ItemsItem>> {
-            override fun onResponse(
-                call: Call<List<ItemsItem>>,
-                response: Response<List<ItemsItem>>
-            ) {
-                showLoading(false)
-                if (response.isSuccessful) {
-                    val responseBody = response.body()
-                    if (responseBody != null) {
-                        if (responseBody.size == 0){
-                            showKeterangan(true)
-                            binding.tvKeterangan.text = "Tidak Memiliki Followers"
-                            Snackbar.make(binding.root, "Tidak Memiliki Followers", Snackbar.LENGTH_SHORT).show()
-                        }else{
-                            setUsersData(responseBody)
-                            showRecycler(true)
-                        }
-                    }
-                } else {
-                    Log.e(TAG, "onFailure respon: ${response}")
-                    Snackbar.make(binding.root, Config.Constants.OPPS + " ${response.message()}", Snackbar.LENGTH_SHORT).show()
-                }
-            }
-            override fun onFailure(call: Call<List<ItemsItem>>, t: Throwable) {
-                showLoading(false)
-                showRecycler(false)
-                showKeterangan(false)
-                Log.e(TAG, "onFailure error: ${t.message}")
-                Snackbar.make(binding.root, Config.Constants.EROR_JARINGAN_ON_ERROR, Snackbar.LENGTH_SHORT).show()
+//    private fun fetchFollowers(username: String){
+//        showLoading(true)
+//        showRecycler(false)
+//        showKeterangan(false)
+//        val client = ApiConfig.getApiService().getFollowers(username)
+//        client.enqueue(object : Callback<List<ItemsItem>> {
+//            override fun onResponse(
+//                call: Call<List<ItemsItem>>,
+//                response: Response<List<ItemsItem>>
+//            ) {
+//                showLoading(false)
+//                if (response.isSuccessful) {
+//                    val responseBody = response.body()
+//                    if (responseBody != null) {
+//                        if (responseBody.size == 0){
+//                            showKeterangan(true)
+//                            binding.tvKeterangan.text = "Tidak Memiliki Followers"
+//                            Snackbar.make(binding.root, "Tidak Memiliki Followers", Snackbar.LENGTH_SHORT).show()
+//                        }else{
+//                            setUsersData(responseBody)
+//                            showRecycler(true)
+//                        }
+//                    }
+//                } else {
+//                    Log.e(TAG, "onFailure respon: ${response}")
+//                    Snackbar.make(binding.root, Config.Constants.OPPS + " ${response.message()}", Snackbar.LENGTH_SHORT).show()
+//                }
+//            }
+//            override fun onFailure(call: Call<List<ItemsItem>>, t: Throwable) {
+//                showLoading(false)
+//                showRecycler(false)
+//                showKeterangan(false)
+//                Log.e(TAG, "onFailure error: ${t.message}")
+//                Snackbar.make(binding.root, Config.Constants.EROR_JARINGAN_ON_ERROR, Snackbar.LENGTH_SHORT).show()
+//
+//            }
+//        })
+//    }
 
-            }
-        })
-    }
-
-    private fun fetchFollowing(username: String){
-        showLoading(true)
-        showRecycler(false)
-        showKeterangan(false)
-        val client = ApiConfig.getApiService().getFollowing(username)
-        client.enqueue(object : Callback<List<ItemsItem>> {
-            override fun onResponse(
-                call: Call<List<ItemsItem>>,
-                response: Response<List<ItemsItem>>
-            ) {
-                showLoading(false)
-                if (response.isSuccessful) {
-                    val responseBody = response.body()
-                    if (responseBody != null) {
-                        if (responseBody.size == 0){
-                            showKeterangan(true)
-                            binding.tvKeterangan.text = "Tidak Memiliki Following"
-                            Snackbar.make(binding.root, "Tidak Memiliki Following", Snackbar.LENGTH_SHORT).show()
-                        }else{
-                            showRecycler(true)
-                            setUsersData(responseBody)
-                        }
-                    }
-                } else {
-                    Log.e(TAG, "onFailure respon: ${response.message()}")
-                    Snackbar.make(binding.root, Config.Constants.OPPS + " ${response.message()}", Snackbar.LENGTH_SHORT).show()
-
-                }
-            }
-            override fun onFailure(call: Call<List<ItemsItem>>, t: Throwable) {
-                showLoading(false)
-                showRecycler(false)
-                showKeterangan(false)
-                Log.e(TAG, "onFailure error: ${t.message}")
-                Snackbar.make(binding.root, Config.Constants.EROR_JARINGAN_ON_ERROR, Snackbar.LENGTH_SHORT).show()
-            }
-        })
-    }
+//    private fun fetchFollowing(username: String){
+//        showLoading(true)
+//        showRecycler(false)
+//        showKeterangan(false)
+//        val client = ApiConfig.getApiService().getFollowing(username)
+//        client.enqueue(object : Callback<List<ItemsItem>> {
+//            override fun onResponse(
+//                call: Call<List<ItemsItem>>,
+//                response: Response<List<ItemsItem>>
+//            ) {
+//                showLoading(false)
+//                if (response.isSuccessful) {
+//                    val responseBody = response.body()
+//                    if (responseBody != null) {
+//                        if (responseBody.size == 0){
+//                            showKeterangan(true)
+//                            binding.tvKeterangan.text = "Tidak Memiliki Following"
+//                            Snackbar.make(binding.root, "Tidak Memiliki Following", Snackbar.LENGTH_SHORT).show()
+//                        }else{
+//                            showRecycler(true)
+//                            setUsersData(responseBody)
+//                        }
+//                    }
+//                } else {
+//                    Log.e(TAG, "onFailure respon: ${response.message()}")
+//                    Snackbar.make(binding.root, Config.Constants.OPPS + " ${response.message()}", Snackbar.LENGTH_SHORT).show()
+//
+//                }
+//            }
+//            override fun onFailure(call: Call<List<ItemsItem>>, t: Throwable) {
+//                showLoading(false)
+//                showRecycler(false)
+//                showKeterangan(false)
+//                Log.e(TAG, "onFailure error: ${t.message}")
+//                Snackbar.make(binding.root, Config.Constants.EROR_JARINGAN_ON_ERROR, Snackbar.LENGTH_SHORT).show()
+//            }
+//        })
+//    }
 
     private fun setUsersData(usersItem: List<ItemsItem>) {
         val adapter = UsersAdapter()

@@ -47,19 +47,6 @@ class DetailUserViewModel : ViewModel() {
                         responseBody?.let {
                             _detailUserRespon.value = it
                         }
-
-//                        binding.tvNameUsers.text = responseBody.name?.toString() ?: responseBody.login
-//                        Glide.with(binding.root)
-//                            .load(responseBody.avatarUrl)
-//                            .into(binding.ivUsers)
-//                        binding.tvUsername.text = "@${responseBody.login}"
-//                        binding.tvCountFollowers.text = responseBody.followers?.toString() ?: "0"
-//                        binding.tvCountFollowing.text = responseBody.following?.toString() ?: "0"
-//                        // Parsing tanggal dari string asal
-//                        val originalDateTime = LocalDateTime.parse(responseBody.createdAt, DateTimeFormatter.ISO_DATE_TIME)
-//                        // Mengubah format tanggal menjadi format yang diinginkan
-//                        val formattedDate = originalDateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
-//                        binding.tvSince.text = "Since Github From : $formattedDate"
                     }
                 } else {
                     Log.e(TAG, "onFailure respon: ${response}")
