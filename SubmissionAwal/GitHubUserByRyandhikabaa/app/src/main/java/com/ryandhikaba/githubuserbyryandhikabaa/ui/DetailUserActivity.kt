@@ -126,13 +126,6 @@ class DetailUserActivity : AppCompatActivity() {
     }
 
 
-
-    private fun showLoading(isLoading: Boolean) {
-        if (isLoading) {
-            binding.divLoading.visibility = View.VISIBLE
-        } else {
-            binding.divLoading.visibility = View.GONE
-        }
-    }
+    private fun showLoading(state: Boolean) { binding.progressBar.visibility = if (state) View.VISIBLE else View.GONE }
 
 }

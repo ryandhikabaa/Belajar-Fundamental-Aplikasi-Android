@@ -40,9 +40,6 @@ data class DetailUserRespon(
 	@field:SerializedName("site_admin")
 	val siteAdmin: Boolean,
 
-	@field:SerializedName("company")
-	val company: Any,
-
 	@field:SerializedName("id")
 	val id: Int,
 

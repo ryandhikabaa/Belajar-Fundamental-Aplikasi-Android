@@ -96,10 +96,10 @@ class TabDetailUserFragment : Fragment() {
 
             if (position == 1){
                 tabDetailUserViewModel.fetchFollowers("$username")
-                binding.tvKeterangan.text = "Tidak Memiliki Followers"
+                binding.tvKeterangan.text = R.string.non_followers.toString()
             } else {
                 tabDetailUserViewModel.fetchFollowing("$username")
-                binding.tvKeterangan.text = "Tidak Memiliki Following"
+                binding.tvKeterangan.text = R.string.non_following.toString()
 
             }
         }
@@ -118,13 +118,8 @@ class TabDetailUserFragment : Fragment() {
         })
     }
 
-    private fun showLoading(isLoading: Boolean) {
-        if (isLoading) {
-            binding.divLoading.visibility = View.VISIBLE
-        } else {
-            binding.divLoading.visibility = View.GONE
-        }
-    }
+    private fun showLoading(state: Boolean) { binding.progressBar.visibility = if (state) View.VISIBLE else View.GONE }
+
 
     private fun showRecycler(isLoading: Boolean) {
         if (isLoading) {
