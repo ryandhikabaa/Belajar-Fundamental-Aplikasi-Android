@@ -47,10 +47,8 @@
         <com.amar.library.ui.StickyScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:id="@+id/scrollView"
-            app:stickyHeader="@+id/divMain">
+            android:fillViewport="true"
+            app:stickyHeader="@+id/tabs">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -174,13 +172,6 @@
 
                 </LinearLayout>
 
-
-                <LinearLayout
-                    android:id="@+id/divMain"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorGreyHalf"
-                    android:orientation="vertical">
                     <com.google.android.material.tabs.TabLayout
                         android:id="@+id/tabs"
                         android:layout_width="match_parent"
@@ -193,12 +184,13 @@
                         app:tabIndicatorHeight="3dp"
                         app:tabMode="fixed"
                         />
-                    <androidx.viewpager2.widget.ViewPager2
-                        android:id="@+id/view_pager"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
 
-                </LinearLayout>
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"/>
             </LinearLayout>
 
         </com.amar.library.ui.StickyScrollView>

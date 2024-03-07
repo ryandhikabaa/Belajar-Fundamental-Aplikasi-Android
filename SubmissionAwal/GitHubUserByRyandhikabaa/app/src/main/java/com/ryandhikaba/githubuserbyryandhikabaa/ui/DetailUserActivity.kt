@@ -12,6 +12,7 @@ import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.ryandhikaba.githubuserbyryandhikabaa.R
@@ -22,6 +23,7 @@ import com.ryandhikaba.githubuserbyryandhikabaa.data.retrofit.ApiConfig
 import com.ryandhikaba.githubuserbyryandhikabaa.databinding.ActivityDetailUserBinding
 import com.ryandhikaba.githubuserbyryandhikabaa.databinding.ActivityMainBinding
 import com.ryandhikaba.githubuserbyryandhikabaa.ui.adapter.SectionsPagerAdapter
+import com.ryandhikaba.githubuserbyryandhikabaa.utils.Config
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -96,16 +98,17 @@ class DetailUserActivity : AppCompatActivity() {
                         // Mengubah format tanggal menjadi format yang diinginkan
                         val formattedDate = originalDateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
                         binding.tvSince.text = "Since Github From : $formattedDate"
-
                         showLoading(false)
                     }
                 } else {
-                    Log.e(TAG, "onFailure respon: ${response.message()}")
+                    Log.e(TAG, "onFailure respon: ${response}")
+                    Snackbar.make(binding.root, Config.Constants.OPPS + " ${response.message()}", Snackbar.LENGTH_SHORT).show()
                 }
             }
             override fun onFailure(call: Call<DetailUserRespon>, t: Throwable) {
                 showLoading(false)
                 Log.e(TAG, "onFailure error: ${t.message}")
+                Snackbar.make(binding.root, Config.Constants.EROR_JARINGAN_ON_ERROR, Snackbar.LENGTH_SHORT).show()
             }
         })
     }

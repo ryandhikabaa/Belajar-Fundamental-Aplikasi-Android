@@ -10,11 +10,13 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.ryandhikaba.githubuserbyryandhikabaa.ui.adapter.UsersAdapter
 import com.ryandhikaba.githubuserbyryandhikabaa.data.response.ItemsItem
 import com.ryandhikaba.githubuserbyryandhikabaa.data.response.UsersResponse
 import com.ryandhikaba.githubuserbyryandhikabaa.data.retrofit.ApiConfig
 import com.ryandhikaba.githubuserbyryandhikabaa.databinding.ActivityMainBinding
+import com.ryandhikaba.githubuserbyryandhikabaa.utils.Config
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -90,11 +92,13 @@ class MainActivity : AppCompatActivity() {
                     }
                 } else {
                     Log.e(TAG, "onFailure respon: ${response.message()}")
+                    Snackbar.make(binding.root, Config.Constants.OPPS + " ${response.message()}", Snackbar.LENGTH_SHORT).show()
                 }
             }
             override fun onFailure(call: Call<UsersResponse>, t: Throwable) {
                 showLoading(false)
                 Log.e(TAG, "onFailure error: ${t.message}")
+                Snackbar.make(binding.root, Config.Constants.EROR_JARINGAN_ON_ERROR, Snackbar.LENGTH_SHORT).show()
             }
         })
     }
