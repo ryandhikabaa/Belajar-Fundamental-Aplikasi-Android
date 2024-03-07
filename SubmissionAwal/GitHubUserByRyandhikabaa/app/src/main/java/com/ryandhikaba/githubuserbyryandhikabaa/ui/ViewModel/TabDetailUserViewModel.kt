@@ -51,11 +51,9 @@ class TabDetailUserViewModel : ViewModel() {
                     if (responseBody != null) {
                         if (responseBody.size == 0){
                             _showKeterangan.value = true
-//                            binding.tvKeterangan.text = "Tidak Memiliki Followers"
                             _snackbarText.value = Event("Tidak Memiliki Followers")
 
                         }else{
-//                            setUsersData(responseBody)
                             _listItem.value = response.body()
                             _showRecycler.value = true
                         }
@@ -95,7 +93,6 @@ class TabDetailUserViewModel : ViewModel() {
                             _snackbarText.value = Event("Tidak Memiliki Following")
 
                         }else{
-//                            setUsersData(responseBody)
                             _listItem.value = response.body()
                             _showRecycler.value = true
                         }

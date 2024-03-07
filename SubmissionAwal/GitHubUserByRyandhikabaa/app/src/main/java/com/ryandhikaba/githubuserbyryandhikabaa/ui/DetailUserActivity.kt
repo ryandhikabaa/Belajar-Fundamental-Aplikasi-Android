@@ -36,6 +36,8 @@ import java.time.format.DateTimeFormatter
 class DetailUserActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailUserBinding
+    private lateinit var content: String
+
 
     companion object {
         private const val TAG = "RBA:DetailUsereActivity ||  "
@@ -69,16 +71,13 @@ class DetailUserActivity : AppCompatActivity() {
         }
 
         with(binding){
-            // Terima objek Service dari Intent
             val users: ItemsItem? = intent.getParcelableExtra("USERS_CLICKED")
 
-            // Periksa apakah objek Service tidak null
             if (users != null) {
 
                 detaiMainViewModel.fetchDetailUsers(users.login)
 
                 detaiMainViewModel.detailUserRespon.observe(this@DetailUserActivity, Observer { detailUser ->
-                    // Perbarui antarmuka pengguna (UI) dengan detail pengguna yang diterima
                     detailUser?.let {
                         binding.tvNameUsers.text = (it.name ?: it.login).toString()
                         Glide.with(binding.root)
@@ -91,6 +90,19 @@ class DetailUserActivity : AppCompatActivity() {
                         val formattedDate = originalDateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
                         binding.tvSince.text = "Since Github From : $formattedDate"
                     }
+                })
+
+                divShare.setOnClickListener(View.OnClickListener {
+                    Snackbar.make(binding.root, "Stay Tuned, Feature Coming Soon !!", Snackbar.LENGTH_SHORT).show()
+
+                })
+
+                ivShare.setOnClickListener(View.OnClickListener {
+                    val shareIntent = Intent()
+                    shareIntent.action = Intent.ACTION_SEND
+                    shareIntent.type = "text/plain"
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, users.htmlUrl) // Ganti dengan tautan yang ingin Anda bagikan
+                    startActivity(Intent.createChooser(shareIntent, "Bagikan link melalui"))
                 })
 
                 ivBack.setOnClickListener(View.OnClickListener { finish() })
