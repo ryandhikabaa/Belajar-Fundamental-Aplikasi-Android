@@ -22,9 +22,12 @@ import com.ryandhikaba.githubuserbyryandhikabaa.data.response.DetailUserRespon
 import com.ryandhikaba.githubuserbyryandhikabaa.data.response.ItemsItem
 import com.ryandhikaba.githubuserbyryandhikabaa.data.response.UsersResponse
 import com.ryandhikaba.githubuserbyryandhikabaa.data.retrofit.ApiConfig
+import com.ryandhikaba.githubuserbyryandhikabaa.database.UsersFav
 import com.ryandhikaba.githubuserbyryandhikabaa.databinding.ActivityDetailUserBinding
 import com.ryandhikaba.githubuserbyryandhikabaa.databinding.ActivityMainBinding
 import com.ryandhikaba.githubuserbyryandhikabaa.ui.ViewModel.DetailUserViewModel
+import com.ryandhikaba.githubuserbyryandhikabaa.ui.ViewModel.UserFavViewModel
+import com.ryandhikaba.githubuserbyryandhikabaa.ui.ViewModel.ViewModelFactory
 import com.ryandhikaba.githubuserbyryandhikabaa.ui.adapter.SectionsPagerAdapter
 import com.ryandhikaba.githubuserbyryandhikabaa.utils.Config
 import retrofit2.Call
@@ -34,6 +37,8 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class DetailUserActivity : AppCompatActivity() {
+
+    private lateinit var userFavViewModel: UserFavViewModel
 
     private lateinit var binding: ActivityDetailUserBinding
     private lateinit var content: String
@@ -53,6 +58,8 @@ class DetailUserActivity : AppCompatActivity() {
         binding = ActivityDetailUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        userFavViewModel = obtainViewModel(this@DetailUserActivity)
+
         val detaiMainViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(
             DetailUserViewModel::class.java)
 
@@ -69,6 +76,8 @@ class DetailUserActivity : AppCompatActivity() {
                 ).show()
             }
         }
+
+
 
         with(binding){
             val users: ItemsItem? = intent.getParcelableExtra("USERS_CLICKED")
@@ -92,9 +101,29 @@ class DetailUserActivity : AppCompatActivity() {
                     }
                 })
 
-                divShare.setOnClickListener(View.OnClickListener {
-                    Snackbar.make(binding.root, "Stay Tuned, Feature Coming Soon !!", Snackbar.LENGTH_SHORT).show()
+                userFavViewModel.getFavoriteUserByUsername(users.login).observe(this@DetailUserActivity, Observer { userFav ->
+                    // Lakukan sesuatu berdasarkan apakah pengguna adalah favorit atau tidak
+                    if (userFav != null) {
+                        // Pengguna adalah favorit, tampilkan UI yang sesuai
+                        // Misalnya, ubah warna tombol menjadi merah
+                        ivFav.setImageResource(R.drawable.baseline_favorite_24)
+                        tvFav.text = "Unfavorite"
+                    } else {
+                        // Pengguna bukan favorit, tampilkan UI yang sesuai
+                        // Misalnya, ubah warna tombol menjadi hijau
+                        ivFav.setImageResource(R.drawable.baseline_favorite_border_24)
+                        tvFav.text = "Favorite"
 
+                    }
+                })
+
+                divFav.setOnClickListener(View.OnClickListener {
+//                    Snackbar.make(binding.root, "Stay Tuned, Feature Coming Soon !!", Snackbar.LENGTH_SHORT).show()
+                    val userFav = UsersFav(
+                        username = users.login,
+                        avatar = users.avatarUrl
+                    )
+                    userFavViewModel.toggleFavorite(userFav)
                 })
 
                 ivShare.setOnClickListener(View.OnClickListener {
@@ -126,6 +155,11 @@ class DetailUserActivity : AppCompatActivity() {
     }
 
 
-    private fun showLoading(state: Boolean) { binding.progressBar.visibility = if (state) View.VISIBLE else View.GONE }
+    private fun showLoading(state: Boolean) { binding.divLoading.visibility = if (state) View.VISIBLE else View.GONE }
+
+    private fun obtainViewModel(activity: AppCompatActivity): UserFavViewModel {
+        val factory = ViewModelFactory.getInstance(activity.application)
+        return ViewModelProvider(activity, factory).get(UserFavViewModel::class.java)
+    }
 
 }
