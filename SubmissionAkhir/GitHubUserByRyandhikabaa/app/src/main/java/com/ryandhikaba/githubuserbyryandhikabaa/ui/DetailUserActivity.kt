@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
@@ -41,7 +42,8 @@ class DetailUserActivity : AppCompatActivity() {
     private lateinit var userFavViewModel: UserFavViewModel
 
     private lateinit var binding: ActivityDetailUserBinding
-    private lateinit var content: String
+
+    private var _isFavorite: Boolean = false
 
 
     companion object {
@@ -101,29 +103,29 @@ class DetailUserActivity : AppCompatActivity() {
                     }
                 })
 
+
                 userFavViewModel.getFavoriteUserByUsername(users.login).observe(this@DetailUserActivity, Observer { userFav ->
-                    // Lakukan sesuatu berdasarkan apakah pengguna adalah favorit atau tidak
                     if (userFav != null) {
-                        // Pengguna adalah favorit, tampilkan UI yang sesuai
-                        // Misalnya, ubah warna tombol menjadi merah
                         ivFav.setImageResource(R.drawable.baseline_favorite_24)
                         tvFav.text = "Unfavorite"
+                        _isFavorite = false
                     } else {
-                        // Pengguna bukan favorit, tampilkan UI yang sesuai
-                        // Misalnya, ubah warna tombol menjadi hijau
                         ivFav.setImageResource(R.drawable.baseline_favorite_border_24)
                         tvFav.text = "Favorite"
-
+                        _isFavorite = true
                     }
                 })
 
                 divFav.setOnClickListener(View.OnClickListener {
-//                    Snackbar.make(binding.root, "Stay Tuned, Feature Coming Soon !!", Snackbar.LENGTH_SHORT).show()
-                    val userFav = UsersFav(
+                    val userFavClick = UsersFav(
                         username = users.login,
                         avatar = users.avatarUrl
                     )
-                    userFavViewModel.toggleFavorite(userFav)
+                    if (_isFavorite){
+                        userFavViewModel.insert(userFavClick)
+                    }else{
+                        userFavViewModel.delete(userFavClick)
+                    }
                 })
 
                 ivShare.setOnClickListener(View.OnClickListener {

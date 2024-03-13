@@ -1,6 +1,7 @@
 package com.ryandhikaba.githubuserbyryandhikabaa.ui.ViewModel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.ryandhikaba.githubuserbyryandhikabaa.database.UsersFav
@@ -20,15 +21,19 @@ class UserFavViewModel (application: Application) : ViewModel() {
     }
 
     fun getAllUsersFav(): LiveData<List<UsersFav>> = mUsersFavRepository.getAllUsersFav()
-    fun getFavoriteUserByUsername(username: String): LiveData<UsersFav> = mUsersFavRepository.getFavoriteUserByUsername(username)
+    fun getFavoriteUserByUsername(username: String): LiveData<UsersFav> {
+        return mUsersFavRepository.getFavoriteUserByUsername(username)
+    }
 
-    fun toggleFavorite(userFav: UsersFav) {
-        val username = userFav.username ?: return
-        val existingUser = mUsersFavRepository.getFavoriteUserByUsername(username).value
+    fun toggleFavorite(userFavOnClick: UsersFav) {
+        val username = userFavOnClick.username ?: return
+        val existingUser = getFavoriteUserByUsername(username).value
+
+//        Log.d("RBA", "toggleFavorite: $existingUser" )
         if (existingUser == null) {
-            insert(userFav)
+            insert(userFavOnClick)
         } else {
-            delete(userFav)
+            delete(userFavOnClick)
         }
     }
 
