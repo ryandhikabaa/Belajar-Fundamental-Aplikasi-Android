@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.ryandhikaba.githubuserbyryandhikabaa.database.UsersFav
 import com.ryandhikaba.githubuserbyryandhikabaa.repository.UsersFavRepository
 
-class UserFavViewModel (application: Application) : ViewModel() {
+class FavoriteUsersViewModel (application: Application) : ViewModel() {
     private val mUsersFavRepository: UsersFavRepository = UsersFavRepository(application)
 
     fun insert(usersFav: UsersFav) {

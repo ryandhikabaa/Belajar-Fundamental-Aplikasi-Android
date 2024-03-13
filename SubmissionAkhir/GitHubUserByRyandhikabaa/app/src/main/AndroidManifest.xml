@@ -15,11 +15,14 @@
         android:theme="@style/Theme.GitHubUserByRyandhikabaa"
         tools:targetApi="31">
         <activity
+            android:name=".ui.FavoriteUsersActivity.FavoriteUsersActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.TestActivity"
             android:exported="true" />
         <activity
             android:name=".ui.DetailUserActivity.DetailUserActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".ui.MainAcivity.MainActivity"
             android:exported="true">

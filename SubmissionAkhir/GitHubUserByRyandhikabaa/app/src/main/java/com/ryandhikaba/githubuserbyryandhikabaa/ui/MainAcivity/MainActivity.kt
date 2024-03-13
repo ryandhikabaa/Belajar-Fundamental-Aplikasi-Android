@@ -7,14 +7,17 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.ryandhikaba.githubuserbyryandhikabaa.R
 import com.ryandhikaba.githubuserbyryandhikabaa.ui.adapter.UsersAdapter
 import com.ryandhikaba.githubuserbyryandhikabaa.data.response.ItemsItem
 import com.ryandhikaba.githubuserbyryandhikabaa.databinding.ActivityMainBinding
 import com.ryandhikaba.githubuserbyryandhikabaa.ui.DetailUserActivity.DetailUserActivity
+import com.ryandhikaba.githubuserbyryandhikabaa.ui.FavoriteUsersActivity.FavoriteUsersActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -87,6 +90,12 @@ class MainActivity : AppCompatActivity() {
                     }
                     return true
                 }
+            })
+
+            fabFav.setImageTintList(ContextCompat.getColorStateList(this@MainActivity, R.color.colorPrimary))
+            fabFav.setBackgroundTintList(ContextCompat.getColorStateList(this@MainActivity, R.color.greyMuda))
+            fabFav.setOnClickListener(View.OnClickListener {
+                startActivity(Intent(this@MainActivity, FavoriteUsersActivity::class.java))
             })
 
         }
