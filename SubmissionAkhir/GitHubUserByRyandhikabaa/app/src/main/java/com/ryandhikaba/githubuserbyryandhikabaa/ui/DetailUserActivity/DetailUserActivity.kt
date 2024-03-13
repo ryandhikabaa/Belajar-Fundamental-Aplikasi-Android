@@ -1,16 +1,12 @@
-package com.ryandhikaba.githubuserbyryandhikabaa.ui
+package com.ryandhikaba.githubuserbyryandhikabaa.ui.DetailUserActivity
 
 import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
@@ -19,27 +15,18 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.ryandhikaba.githubuserbyryandhikabaa.R
-import com.ryandhikaba.githubuserbyryandhikabaa.data.response.DetailUserRespon
 import com.ryandhikaba.githubuserbyryandhikabaa.data.response.ItemsItem
-import com.ryandhikaba.githubuserbyryandhikabaa.data.response.UsersResponse
-import com.ryandhikaba.githubuserbyryandhikabaa.data.retrofit.ApiConfig
 import com.ryandhikaba.githubuserbyryandhikabaa.database.UsersFav
 import com.ryandhikaba.githubuserbyryandhikabaa.databinding.ActivityDetailUserBinding
-import com.ryandhikaba.githubuserbyryandhikabaa.databinding.ActivityMainBinding
-import com.ryandhikaba.githubuserbyryandhikabaa.ui.ViewModel.DetailUserViewModel
-import com.ryandhikaba.githubuserbyryandhikabaa.ui.ViewModel.UserFavViewModel
-import com.ryandhikaba.githubuserbyryandhikabaa.ui.ViewModel.ViewModelFactory
-import com.ryandhikaba.githubuserbyryandhikabaa.ui.adapter.SectionsPagerAdapter
-import com.ryandhikaba.githubuserbyryandhikabaa.utils.Config
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.ryandhikaba.githubuserbyryandhikabaa.ui.ViewModelFactory.ViewModelFactory
+import com.ryandhikaba.githubuserbyryandhikabaa.ui.DetailUserActivity.TabDetailUser.SectionsPagerAdapter
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class DetailUserActivity : AppCompatActivity() {
 
-    private lateinit var userFavViewModel: UserFavViewModel
+
+    private lateinit var detailUserViewModel: DetailUserViewModel
 
     private lateinit var binding: ActivityDetailUserBinding
 
@@ -60,16 +47,13 @@ class DetailUserActivity : AppCompatActivity() {
         binding = ActivityDetailUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        userFavViewModel = obtainViewModel(this@DetailUserActivity)
+        detailUserViewModel = obtainViewModel(this@DetailUserActivity)
 
-        val detaiMainViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(
-            DetailUserViewModel::class.java)
-
-        detaiMainViewModel.isLoading.observe(this) {
+        detailUserViewModel.isLoading.observe(this) {
             showLoading(it)
         }
 
-        detaiMainViewModel.snackbarText.observe(this) {
+        detailUserViewModel.snackbarText.observe(this) {
             it.getContentIfNotHandled()?.let { snackBarText ->
                 Snackbar.make(
                     window.decorView.rootView,
@@ -79,16 +63,14 @@ class DetailUserActivity : AppCompatActivity() {
             }
         }
 
-
-
         with(binding){
             val users: ItemsItem? = intent.getParcelableExtra("USERS_CLICKED")
 
             if (users != null) {
 
-                detaiMainViewModel.fetchDetailUsers(users.login)
+                detailUserViewModel.fetchDetailUsers(users.login)
 
-                detaiMainViewModel.detailUserRespon.observe(this@DetailUserActivity, Observer { detailUser ->
+                detailUserViewModel.detailUserRespon.observe(this@DetailUserActivity, Observer { detailUser ->
                     detailUser?.let {
                         binding.tvNameUsers.text = (it.name ?: it.login).toString()
                         Glide.with(binding.root)
@@ -104,14 +86,16 @@ class DetailUserActivity : AppCompatActivity() {
                 })
 
 
-                userFavViewModel.getFavoriteUserByUsername(users.login).observe(this@DetailUserActivity, Observer { userFav ->
+                detailUserViewModel.getFavoriteUserByUsername(users.login).observe(this@DetailUserActivity, Observer { userFav ->
                     if (userFav != null) {
                         ivFav.setImageResource(R.drawable.baseline_favorite_24)
                         tvFav.text = "Unfavorite"
+                        divFav.setBackgroundResource(R.drawable.rectangle_grey_tua)
                         _isFavorite = false
                     } else {
                         ivFav.setImageResource(R.drawable.baseline_favorite_border_24)
                         tvFav.text = "Favorite"
+                        divFav.setBackgroundResource(R.drawable.rectangle_grey_muda)
                         _isFavorite = true
                     }
                 })
@@ -122,9 +106,9 @@ class DetailUserActivity : AppCompatActivity() {
                         avatar = users.avatarUrl
                     )
                     if (_isFavorite){
-                        userFavViewModel.insert(userFavClick)
+                        detailUserViewModel.insert(userFavClick)
                     }else{
-                        userFavViewModel.delete(userFavClick)
+                        detailUserViewModel.delete(userFavClick)
                     }
                 })
 
@@ -132,7 +116,7 @@ class DetailUserActivity : AppCompatActivity() {
                     val shareIntent = Intent()
                     shareIntent.action = Intent.ACTION_SEND
                     shareIntent.type = "text/plain"
-                    shareIntent.putExtra(Intent.EXTRA_TEXT, users.htmlUrl) // Ganti dengan tautan yang ingin Anda bagikan
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, users.htmlUrl)
                     startActivity(Intent.createChooser(shareIntent, "Bagikan link melalui"))
                 })
 
@@ -159,9 +143,9 @@ class DetailUserActivity : AppCompatActivity() {
 
     private fun showLoading(state: Boolean) { binding.divLoading.visibility = if (state) View.VISIBLE else View.GONE }
 
-    private fun obtainViewModel(activity: AppCompatActivity): UserFavViewModel {
+    private fun obtainViewModel(activity: AppCompatActivity): DetailUserViewModel {
         val factory = ViewModelFactory.getInstance(activity.application)
-        return ViewModelProvider(activity, factory).get(UserFavViewModel::class.java)
+        return ViewModelProvider(activity, factory).get(DetailUserViewModel::class.java)
     }
 
 }

@@ -1,14 +1,12 @@
-package com.ryandhikaba.githubuserbyryandhikabaa.ui.ViewModel
+package com.ryandhikaba.githubuserbyryandhikabaa.ui.MainAcivity
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.android.material.snackbar.Snackbar
 import com.ryandhikaba.githubuserbyryandhikabaa.data.response.ItemsItem
 import com.ryandhikaba.githubuserbyryandhikabaa.data.response.UsersResponse
 import com.ryandhikaba.githubuserbyryandhikabaa.data.retrofit.ApiConfig
-import com.ryandhikaba.githubuserbyryandhikabaa.ui.MainActivity
 import com.ryandhikaba.githubuserbyryandhikabaa.utils.Config
 import com.ryandhikaba.githubuserbyryandhikabaa.utils.Event
 import retrofit2.Call

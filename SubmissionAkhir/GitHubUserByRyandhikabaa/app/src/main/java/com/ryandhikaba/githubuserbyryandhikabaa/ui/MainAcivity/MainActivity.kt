@@ -1,10 +1,9 @@
-package com.ryandhikaba.githubuserbyryandhikabaa.ui
+package com.ryandhikaba.githubuserbyryandhikabaa.ui.MainAcivity
 
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
@@ -14,14 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.ryandhikaba.githubuserbyryandhikabaa.ui.adapter.UsersAdapter
 import com.ryandhikaba.githubuserbyryandhikabaa.data.response.ItemsItem
-import com.ryandhikaba.githubuserbyryandhikabaa.data.response.UsersResponse
-import com.ryandhikaba.githubuserbyryandhikabaa.data.retrofit.ApiConfig
 import com.ryandhikaba.githubuserbyryandhikabaa.databinding.ActivityMainBinding
-import com.ryandhikaba.githubuserbyryandhikabaa.ui.ViewModel.MainViewModel
-import com.ryandhikaba.githubuserbyryandhikabaa.utils.Config
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.ryandhikaba.githubuserbyryandhikabaa.ui.DetailUserActivity.DetailUserActivity
 
 class MainActivity : AppCompatActivity() {
 

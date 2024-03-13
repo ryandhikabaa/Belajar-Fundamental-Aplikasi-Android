@@ -148,7 +148,6 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:background="@drawable/rectangle"
-                        android:backgroundTint="@color/greyMudaRBA"
                         android:paddingVertical="5dp"
                         android:paddingHorizontal="8dp"
                         android:layout_marginVertical="10dp">

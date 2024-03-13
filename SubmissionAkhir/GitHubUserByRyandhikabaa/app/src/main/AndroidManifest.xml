@@ -18,10 +18,10 @@
             android:name=".ui.TestActivity"
             android:exported="true" />
         <activity
-            android:name=".ui.DetailUserActivity"
+            android:name=".ui.DetailUserActivity.DetailUserActivity"
             android:exported="true"></activity>
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.MainAcivity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

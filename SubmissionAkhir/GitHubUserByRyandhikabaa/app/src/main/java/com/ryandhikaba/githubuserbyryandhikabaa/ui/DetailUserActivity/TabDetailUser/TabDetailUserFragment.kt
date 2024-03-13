@@ -1,31 +1,20 @@
-package com.ryandhikaba.githubuserbyryandhikabaa.ui.fragment
+package com.ryandhikaba.githubuserbyryandhikabaa.ui.DetailUserActivity.TabDetailUser
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.ryandhikaba.githubuserbyryandhikabaa.R
 import com.ryandhikaba.githubuserbyryandhikabaa.data.response.ItemsItem
-import com.ryandhikaba.githubuserbyryandhikabaa.data.response.UsersResponse
-import com.ryandhikaba.githubuserbyryandhikabaa.data.retrofit.ApiConfig
 import com.ryandhikaba.githubuserbyryandhikabaa.databinding.FragmentTabDetailUserBinding
-import com.ryandhikaba.githubuserbyryandhikabaa.ui.DetailUserActivity
-import com.ryandhikaba.githubuserbyryandhikabaa.ui.MainActivity
-import com.ryandhikaba.githubuserbyryandhikabaa.ui.ViewModel.MainViewModel
-import com.ryandhikaba.githubuserbyryandhikabaa.ui.ViewModel.TabDetailUserViewModel
+import com.ryandhikaba.githubuserbyryandhikabaa.ui.DetailUserActivity.DetailUserActivity
 import com.ryandhikaba.githubuserbyryandhikabaa.ui.adapter.UsersAdapter
-import com.ryandhikaba.githubuserbyryandhikabaa.utils.Config
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class TabDetailUserFragment : Fragment() {
     private lateinit var binding: FragmentTabDetailUserBinding

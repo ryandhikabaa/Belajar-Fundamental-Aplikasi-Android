@@ -1,10 +1,9 @@
-package com.ryandhikaba.githubuserbyryandhikabaa.ui.adapter
+package com.ryandhikaba.githubuserbyryandhikabaa.ui.DetailUserActivity.TabDetailUser
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.ryandhikaba.githubuserbyryandhikabaa.ui.fragment.TabDetailUserFragment
 
 class SectionsPagerAdapter (activity: AppCompatActivity) : FragmentStateAdapter(activity) {
     var username: String = ""

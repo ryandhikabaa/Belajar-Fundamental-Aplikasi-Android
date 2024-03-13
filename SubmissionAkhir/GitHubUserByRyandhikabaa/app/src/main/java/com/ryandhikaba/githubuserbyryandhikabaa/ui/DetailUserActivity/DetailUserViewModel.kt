@@ -1,23 +1,21 @@
-package com.ryandhikaba.githubuserbyryandhikabaa.ui.ViewModel
+package com.ryandhikaba.githubuserbyryandhikabaa.ui.DetailUserActivity
 
+import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.bumptech.glide.Glide
-import com.google.android.material.snackbar.Snackbar
 import com.ryandhikaba.githubuserbyryandhikabaa.data.response.DetailUserRespon
 import com.ryandhikaba.githubuserbyryandhikabaa.data.retrofit.ApiConfig
-import com.ryandhikaba.githubuserbyryandhikabaa.ui.DetailUserActivity
+import com.ryandhikaba.githubuserbyryandhikabaa.database.UsersFav
+import com.ryandhikaba.githubuserbyryandhikabaa.repository.UsersFavRepository
 import com.ryandhikaba.githubuserbyryandhikabaa.utils.Config
 import com.ryandhikaba.githubuserbyryandhikabaa.utils.Event
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
-class DetailUserViewModel : ViewModel() {
+class DetailUserViewModel (application: Application) : ViewModel() {
 
     private val _detailUserRespon = MutableLiveData<DetailUserRespon>()
     val detailUserRespon: LiveData<DetailUserRespon> = _detailUserRespon
@@ -27,6 +25,8 @@ class DetailUserViewModel : ViewModel() {
 
     private val _snackbarText = MutableLiveData<Event<String>>()
     val snackbarText: LiveData<Event<String>> = _snackbarText
+
+    private val mUsersFavRepository: UsersFavRepository = UsersFavRepository(application)
 
     companion object{
         private const val TAG = "DetailUserViewModel"
@@ -59,5 +59,17 @@ class DetailUserViewModel : ViewModel() {
                 _snackbarText.value = Event(Config.Constants.EROR_JARINGAN_ON_ERROR)
             }
         })
+    }
+
+    fun insert(usersFav: UsersFav) {
+        mUsersFavRepository.insert(usersFav)
+    }
+
+    fun delete(usersFav: UsersFav) {
+        mUsersFavRepository.delete(usersFav)
+    }
+
+    fun getFavoriteUserByUsername(username: String): LiveData<UsersFav> {
+        return mUsersFavRepository.getFavoriteUserByUsername(username)
     }
 }
