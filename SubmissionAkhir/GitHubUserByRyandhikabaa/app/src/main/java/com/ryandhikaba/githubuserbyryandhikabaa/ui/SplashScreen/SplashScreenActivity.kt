@@ -43,15 +43,10 @@ class SplashScreenActivity : AppCompatActivity() {
 
         with(binding){
 
-
-
-            // Load the animation
             val fadeIn = AnimationUtils.loadAnimation(this@SplashScreenActivity, R.anim.fade_in)
 
-            // Set animation to ImageView
             imageView.startAnimation(fadeIn)
 
-            // Delay for 2 seconds and start MainActivity
             lifecycleScope.launch {
                 delay(2000)
                 withContext(Dispatchers.Main) {

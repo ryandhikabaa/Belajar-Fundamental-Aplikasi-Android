@@ -42,10 +42,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-//        val mainViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(
-//            MainViewModel::class.java)
-
         mainViewModel = obtainViewModel(this@MainActivity)
 
         mainViewModel.getThemeSettings().observe(this) { isDarkModeActive: Boolean ->
@@ -75,10 +71,6 @@ class MainActivity : AppCompatActivity() {
                 ).show()
             }
         }
-
-//        binding.switchTheme.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-//            mainViewModel.saveThemeSetting(isChecked)
-//        }
 
 
         with(binding) {
