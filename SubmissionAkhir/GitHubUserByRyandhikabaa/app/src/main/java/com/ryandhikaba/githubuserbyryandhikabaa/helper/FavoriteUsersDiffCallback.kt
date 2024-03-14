@@ -1,9 +1,9 @@
 package com.ryandhikaba.githubuserbyryandhikabaa.helper
 
 import androidx.recyclerview.widget.DiffUtil
-import com.ryandhikaba.githubuserbyryandhikabaa.database.UsersFav
+import com.ryandhikaba.githubuserbyryandhikabaa.database.UsersFavEntity
 
-class UserFavDiffCallback (private val oldNoteList: List<UsersFav>, private val newNoteList: List<UsersFav>) : DiffUtil.Callback() {
+class FavoriteUsersDiffCallback (private val oldNoteList: List<UsersFavEntity>, private val newNoteList: List<UsersFavEntity>) : DiffUtil.Callback() {
     override fun getOldListSize(): Int = oldNoteList.size
     override fun getNewListSize(): Int = newNoteList.size
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.StringRes
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
@@ -16,7 +15,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.ryandhikaba.githubuserbyryandhikabaa.R
 import com.ryandhikaba.githubuserbyryandhikabaa.data.response.ItemsItem
-import com.ryandhikaba.githubuserbyryandhikabaa.database.UsersFav
+import com.ryandhikaba.githubuserbyryandhikabaa.database.UsersFavEntity
 import com.ryandhikaba.githubuserbyryandhikabaa.databinding.ActivityDetailUserBinding
 import com.ryandhikaba.githubuserbyryandhikabaa.ui.ViewModelFactory.ViewModelFactory
 import com.ryandhikaba.githubuserbyryandhikabaa.ui.DetailUserActivity.TabDetailUser.SectionsPagerAdapter
@@ -65,6 +64,7 @@ class DetailUserActivity : AppCompatActivity() {
 
         with(binding){
             val users: ItemsItem? = intent.getParcelableExtra("USERS_CLICKED")
+            val usersname= intent.getStringExtra("UERNAME_USERS_CLICKED")
 
             if (users != null) {
 
@@ -82,6 +82,14 @@ class DetailUserActivity : AppCompatActivity() {
                         val originalDateTime = LocalDateTime.parse(it.createdAt, DateTimeFormatter.ISO_DATE_TIME)
                         val formattedDate = originalDateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
                         binding.tvSince.text = "Since Github From : $formattedDate"
+
+                        ivShare.setOnClickListener(View.OnClickListener {
+                            val shareIntent = Intent()
+                            shareIntent.action = Intent.ACTION_SEND
+                            shareIntent.type = "text/plain"
+                            shareIntent.putExtra(Intent.EXTRA_TEXT, detailUser.htmlUrl)
+                            startActivity(Intent.createChooser(shareIntent, "Bagikan link melalui"))
+                        })
                     }
                 })
 
@@ -101,7 +109,7 @@ class DetailUserActivity : AppCompatActivity() {
                 })
 
                 divFav.setOnClickListener(View.OnClickListener {
-                    val userFavClick = UsersFav(
+                    val userFavClick = UsersFavEntity(
                         username = users.login,
                         avatar = users.avatarUrl
                     )
@@ -112,13 +120,7 @@ class DetailUserActivity : AppCompatActivity() {
                     }
                 })
 
-                ivShare.setOnClickListener(View.OnClickListener {
-                    val shareIntent = Intent()
-                    shareIntent.action = Intent.ACTION_SEND
-                    shareIntent.type = "text/plain"
-                    shareIntent.putExtra(Intent.EXTRA_TEXT, users.htmlUrl)
-                    startActivity(Intent.createChooser(shareIntent, "Bagikan link melalui"))
-                })
+
 
                 ivBack.setOnClickListener(View.OnClickListener { finish() })
 

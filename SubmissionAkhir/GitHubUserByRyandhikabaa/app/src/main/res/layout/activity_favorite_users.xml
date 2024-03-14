@@ -17,5 +17,12 @@
             app:titleTextColor="@android:color/white"
             app:navigationIcon="@drawable/baseline_arrow_back_24"
             app:title="Favorite User Github"/>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvusers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/item_row_users" />
     </LinearLayout>
 </RelativeLayout>

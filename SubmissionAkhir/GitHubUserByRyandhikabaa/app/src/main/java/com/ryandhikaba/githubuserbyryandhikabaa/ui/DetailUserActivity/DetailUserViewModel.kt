@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ryandhikaba.githubuserbyryandhikabaa.data.response.DetailUserRespon
 import com.ryandhikaba.githubuserbyryandhikabaa.data.retrofit.ApiConfig
-import com.ryandhikaba.githubuserbyryandhikabaa.database.UsersFav
+import com.ryandhikaba.githubuserbyryandhikabaa.database.UsersFavEntity
 import com.ryandhikaba.githubuserbyryandhikabaa.repository.UsersFavRepository
 import com.ryandhikaba.githubuserbyryandhikabaa.utils.Config
 import com.ryandhikaba.githubuserbyryandhikabaa.utils.Event
@@ -61,15 +61,15 @@ class DetailUserViewModel (application: Application) : ViewModel() {
         })
     }
 
-    fun insert(usersFav: UsersFav) {
-        mUsersFavRepository.insert(usersFav)
+    fun insert(usersFavEntity: UsersFavEntity) {
+        mUsersFavRepository.insert(usersFavEntity)
     }
 
-    fun delete(usersFav: UsersFav) {
-        mUsersFavRepository.delete(usersFav)
+    fun delete(usersFavEntity: UsersFavEntity) {
+        mUsersFavRepository.delete(usersFavEntity)
     }
 
-    fun getFavoriteUserByUsername(username: String): LiveData<UsersFav> {
+    fun getFavoriteUserByUsername(username: String): LiveData<UsersFavEntity> {
         return mUsersFavRepository.getFavoriteUserByUsername(username)
     }
 }

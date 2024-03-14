@@ -11,14 +11,14 @@ import androidx.room.Update
 @Dao
 interface UsersFavDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(usersFav: UsersFav)
+    fun insert(usersFavEntity: UsersFavEntity)
     @Update
-    fun update(usersFav: UsersFav)
+    fun update(usersFavEntity: UsersFavEntity)
     @Delete
-    fun delete(usersFav: UsersFav)
-    @Query("SELECT * from usersFav ORDER BY username ASC")
-    fun getAllUsersFav(): LiveData<List<UsersFav>>
+    fun delete(usersFavEntity: UsersFavEntity)
+    @Query("SELECT * from UsersFavEntity ORDER BY username ASC")
+    fun getAllUsersFav(): LiveData<List<UsersFavEntity>>
 
-    @Query("SELECT * FROM usersFav WHERE username = :username")
-    fun getFavoriteUserByUsername(username: String): LiveData<UsersFav>
+    @Query("SELECT * FROM UsersFavEntity WHERE username = :username")
+    fun getFavoriteUserByUsername(username: String): LiveData<UsersFavEntity>
 }

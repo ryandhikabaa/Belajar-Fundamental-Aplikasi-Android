@@ -1,13 +1,26 @@
 package com.ryandhikaba.githubuserbyryandhikabaa.ui.FavoriteUsersActivity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ryandhikaba.githubuserbyryandhikabaa.R
+import com.ryandhikaba.githubuserbyryandhikabaa.data.response.ItemsItem
+import com.ryandhikaba.githubuserbyryandhikabaa.database.UsersFavEntity
 import com.ryandhikaba.githubuserbyryandhikabaa.databinding.ActivityFavoriteUsersBinding
+import com.ryandhikaba.githubuserbyryandhikabaa.ui.DetailUserActivity.DetailUserActivity
+import com.ryandhikaba.githubuserbyryandhikabaa.ui.ViewModelFactory.ViewModelFactory
+import com.ryandhikaba.githubuserbyryandhikabaa.ui.adapter.UsersAdapter
 
 class FavoriteUsersActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityFavoriteUsersBinding
+
+    private lateinit var adapter: FavoriteUsersAdapter
+
+    private lateinit var favoriteUsersViewModel: FavoriteUsersViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFavoriteUsersBinding.inflate(layoutInflater)
@@ -22,6 +35,38 @@ class FavoriteUsersActivity : AppCompatActivity() {
             toolbar.setNavigationOnClickListener {
                 onBackPressed()
             }
+
+            adapter = FavoriteUsersAdapter()
+            rvusers.layoutManager = LinearLayoutManager(this@FavoriteUsersActivity)
+            rvusers.setHasFixedSize(true)
+            rvusers.adapter = adapter
+
+            favoriteUsersViewModel = obtainViewModel(this@FavoriteUsersActivity)
+
+            favoriteUsersViewModel.getAllUsersFav().observe(this@FavoriteUsersActivity) { usersFavList ->
+                if (usersFavList != null) {
+                    adapter.setListUsersFavorite(usersFavList)
+                }
+            }
+
+            adapter.setOnItemClickCallback(object : FavoriteUsersAdapter.OnItemClickCallback {
+                override fun onItemClicked(data: UsersFavEntity) {
+                    val userFavClick = ItemsItem(
+                        login = data.username,
+                        avatarUrl = data.avatar!!,
+                        url = "",
+                        htmlUrl = ""
+                    )
+                    val intent = Intent(this@FavoriteUsersActivity, DetailUserActivity::class.java)
+                    intent.putExtra("USERS_CLICKED", userFavClick)
+                    startActivity(intent)
+                }
+            })
         }
+    }
+
+    private fun obtainViewModel(activity: AppCompatActivity): FavoriteUsersViewModel {
+        val factory = ViewModelFactory.getInstance(activity.application)
+        return ViewModelProvider(activity, factory).get(FavoriteUsersViewModel::class.java)
     }
 }

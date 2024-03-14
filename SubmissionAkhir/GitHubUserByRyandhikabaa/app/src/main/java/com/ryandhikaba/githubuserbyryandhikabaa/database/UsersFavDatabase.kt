@@ -6,7 +6,7 @@ import androidx.room.RoomDatabase
 import android.content.Context
 
 
-@Database(entities = [UsersFav::class], version = 1)
+@Database(entities = [UsersFavEntity::class], version = 1)
 abstract class UsersFavDatabase : RoomDatabase() {
     abstract fun userFavDao(): UsersFavDao
     companion object {
