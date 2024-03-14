@@ -107,7 +107,7 @@ class TabDetailUserFragment : Fragment() {
         })
     }
 
-    private fun showLoading(state: Boolean) { binding.progressBar.visibility = if (state) View.VISIBLE else View.GONE }
+    private fun showLoading(state: Boolean) { binding.divLoading.visibility = if (state) View.VISIBLE else View.GONE }
 
 
     private fun showRecycler(isLoading: Boolean) {

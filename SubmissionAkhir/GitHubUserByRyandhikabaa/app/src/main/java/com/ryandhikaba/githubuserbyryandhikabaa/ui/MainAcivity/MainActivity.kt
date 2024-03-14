@@ -93,12 +93,6 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    // Panggil fungsi untuk menangani perubahan teks query hanya jika panjang teks lebih dari 3 karakter
-                    if (newText?.length ?: 0 >= 3) {
-                        newText?.let {
-                            mainViewModel.updateUsername(newText)
-                        }
-                    }
 
                     if (newText.isNullOrEmpty()) {
                         hideKeyboard()
@@ -111,6 +105,7 @@ class MainActivity : AppCompatActivity() {
                     return true
                 }
             })
+
 
             fabFav.setImageTintList(ContextCompat.getColorStateList(this@MainActivity, R.color.colorPrimary))
             fabFav.setBackgroundTintList(ContextCompat.getColorStateList(this@MainActivity, R.color.greyMuda))
