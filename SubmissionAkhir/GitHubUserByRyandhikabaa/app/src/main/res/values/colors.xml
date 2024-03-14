@@ -11,6 +11,9 @@
     <color name="greyTuaRBA">#6E6E6D</color>
     <color name="redRBA">#CE0641</color>
 
+    <color name="textColorLight">@color/black</color>
+    <color name="textColorDark">@color/white</color>
+
 
     <color name="blueDark">#1F3F6F</color>
     <color name="softGrey1">#F4F3F3</color>

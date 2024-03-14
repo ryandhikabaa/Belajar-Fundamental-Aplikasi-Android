@@ -36,8 +36,10 @@ class SplashScreenActivity : AppCompatActivity() {
         splashScreenViewModel.getThemeSettings().observe(this@SplashScreenActivity) { isDarkModeActive: Boolean ->
             if (isDarkModeActive) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                binding.imageView.setImageResource(R.drawable.github_putih)
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                binding.imageView.setImageResource(R.drawable.github_logo)
             }
         }
 

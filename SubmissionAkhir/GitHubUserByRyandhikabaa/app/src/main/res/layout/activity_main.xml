@@ -27,7 +27,8 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
                     <TextView
                         android:id="@+id/tvAppVersion"
                         android:layout_width="wrap_content"
@@ -37,15 +38,21 @@
                         android:textColor="@color/white"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="20dp"/>
-                    <com.google.android.material.materialswitch.MaterialSwitch
-                        android:id="@+id/switch_theme"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
+                        android:orientation="horizontal"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="10dp"
-                        style="@style/Widget.App.Switch"
-                        app:thumbIcon="@drawable/baseline_lightbulb_circle_24"/>
+                        android:layout_marginRight="20dp">
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/switch_theme"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            style="@style/Widget.App.Switch"
+                            app:thumbIcon="@drawable/baseline_lightbulb_circle_24"/>
+                    </LinearLayout>
+
                 </RelativeLayout>
 
                 <TextView
@@ -67,13 +74,14 @@
 
                 <SearchView
                     android:id="@+id/svUsers"
-                    android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="20dp"
                     android:background="@drawable/search_view_bg"
                     android:iconifiedByDefault="false"
-                    android:queryHint="Search Here..." />
+                    android:queryHint="Search Here..."
+                    android:theme="@style/SEARCH"/>
 
 
             </LinearLayout>
@@ -97,7 +105,9 @@
         android:layout_margin="16dp"
         app:srcCompat="@drawable/baseline_favorite_24"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="#CAC7C7"
+        />
 
 
 

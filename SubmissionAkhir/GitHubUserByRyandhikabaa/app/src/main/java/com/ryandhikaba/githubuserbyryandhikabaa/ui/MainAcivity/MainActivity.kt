@@ -48,9 +48,11 @@ class MainActivity : AppCompatActivity() {
             if (isDarkModeActive) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 binding.switchTheme.isChecked = true
+                binding.switchTheme.setThumbIconResource(R.drawable.baseline_nightlight_24)
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 binding.switchTheme.isChecked = false
+                binding.switchTheme.setThumbIconResource(R.drawable.baseline_light_mode_24)
             }
         }
         mainViewModel.listItem.observe(this) { usersList ->
