@@ -19,6 +19,7 @@ import com.ryandhikaba.githubuserbyryandhikabaa.database.UsersFavEntity
 import com.ryandhikaba.githubuserbyryandhikabaa.databinding.ActivityDetailUserBinding
 import com.ryandhikaba.githubuserbyryandhikabaa.ui.ViewModelFactory.ViewModelFactory
 import com.ryandhikaba.githubuserbyryandhikabaa.ui.DetailUserActivity.TabDetailUser.SectionsPagerAdapter
+import com.ryandhikaba.githubuserbyryandhikabaa.utils.Config
 import com.ryandhikaba.githubuserbyryandhikabaa.utils.SettingPreferences
 import com.ryandhikaba.githubuserbyryandhikabaa.utils.dataStore
 import java.time.LocalDateTime
@@ -74,16 +75,16 @@ class DetailUserActivity : AppCompatActivity() {
 
                 detailUserViewModel.detailUserRespon.observe(this@DetailUserActivity, Observer { detailUser ->
                     detailUser?.let {
-                        binding.tvNameUsers.text = (it.name ?: it.login).toString()
-                        Glide.with(binding.root)
+                        tvNameUsers.text = (it.name ?: it.login).toString()
+                        Glide.with(root)
                             .load(it.avatarUrl)
-                            .into(binding.ivUsers)
-                        binding.tvUsername.text = "@${it.login}"
-                        binding.tvCountFollowers.text = it.followers?.toString() ?: "0"
-                        binding.tvCountFollowing.text = it.following?.toString() ?: "0"
+                            .into(ivUsers)
+                        tvUsername.text = "@${it.login}"
+                        tvCountFollowers.text = it.followers?.toString() ?: "0"
+                        tvCountFollowing.text = it.following?.toString() ?: "0"
                         val originalDateTime = LocalDateTime.parse(it.createdAt, DateTimeFormatter.ISO_DATE_TIME)
                         val formattedDate = originalDateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
-                        binding.tvSince.text = "Since Github From : $formattedDate"
+                        tvSince.text = "Since Github From : $formattedDate"
 
                         ivShare.setOnClickListener(View.OnClickListener {
                             val shareIntent = Intent()
@@ -99,12 +100,12 @@ class DetailUserActivity : AppCompatActivity() {
                 detailUserViewModel.getFavoriteUserByUsername(users.login).observe(this@DetailUserActivity, Observer { userFav ->
                     if (userFav != null) {
                         ivFav.setImageResource(R.drawable.baseline_favorite_24)
-                        tvFav.text = "Unfavorite"
+                        tvFav.text = getString(R.string.action_unfavorite)
                         divFav.setBackgroundResource(R.drawable.rectangle_grey_tua)
                         _isFavorite = false
                     } else {
                         ivFav.setImageResource(R.drawable.baseline_favorite_border_24)
-                        tvFav.text = "Favorite"
+                        tvFav.text = getString(R.string.action_favorite)
                         divFav.setBackgroundResource(R.drawable.rectangle_grey_muda)
                         _isFavorite = true
                     }
@@ -136,7 +137,7 @@ class DetailUserActivity : AppCompatActivity() {
                 }.attach()
 
             } else {
-                Toast.makeText(this@DetailUserActivity, "Opps!, Data Service Tidak Ditemukan", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@DetailUserActivity, Config.Constants.EROR_JARINGAN_ON_ERROR, Toast.LENGTH_SHORT).show()
                 finish()
             }
 

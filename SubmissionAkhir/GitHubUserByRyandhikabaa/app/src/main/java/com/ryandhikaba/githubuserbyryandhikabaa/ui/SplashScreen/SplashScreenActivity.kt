@@ -50,7 +50,7 @@ class SplashScreenActivity : AppCompatActivity() {
             imageView.startAnimation(fadeIn)
 
             lifecycleScope.launch {
-                delay(2000)
+                delay(DELAY_DURATION_MS)
                 withContext(Dispatchers.Main) {
                     val intent = Intent(this@SplashScreenActivity, MainActivity::class.java)
                     startActivity(intent)
@@ -63,5 +63,9 @@ class SplashScreenActivity : AppCompatActivity() {
     private fun obtainViewModel(activity: AppCompatActivity): SplashScreenViewModel {
         val factory = ViewModelFactory.getInstance(activity.application, SettingPreferences.getInstance(application.dataStore))
         return ViewModelProvider(activity, factory).get(SplashScreenViewModel::class.java)
+    }
+
+    companion object {
+        const val DELAY_DURATION_MS = 2000L
     }
 }

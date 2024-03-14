@@ -57,7 +57,6 @@ class TabDetailUserViewModel : ViewModel() {
                         }
                     }
                 } else {
-                    Log.e(TAG, "onFailure respon: ${response}")
                     _snackbarText.value = Event(Config.Constants.OPPS + " ${response}")
                 }
             }

@@ -107,8 +107,8 @@ class MainActivity : AppCompatActivity() {
             })
 
 
-            fabFav.setImageTintList(ContextCompat.getColorStateList(this@MainActivity, R.color.colorPrimary))
-            fabFav.setBackgroundTintList(ContextCompat.getColorStateList(this@MainActivity, R.color.greyMuda))
+            fabFav.imageTintList = ContextCompat.getColorStateList(this@MainActivity, R.color.colorPrimary)
+            fabFav.backgroundTintList = ContextCompat.getColorStateList(this@MainActivity, R.color.greyMuda)
             fabFav.setOnClickListener(View.OnClickListener {
                 startActivity(Intent(this@MainActivity, FavoriteUsersActivity::class.java))
             })

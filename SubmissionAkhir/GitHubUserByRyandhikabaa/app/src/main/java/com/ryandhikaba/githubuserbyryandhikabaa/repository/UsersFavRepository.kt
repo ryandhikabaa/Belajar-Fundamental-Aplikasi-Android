@@ -25,7 +25,4 @@ class UsersFavRepository(application: Application) {
     fun delete(usersFavEntity: UsersFavEntity) {
         executorService.execute { mUsersFavDao.delete(usersFavEntity) }
     }
-    fun update(usersFavEntity: UsersFavEntity) {
-        executorService.execute { mUsersFavDao.update(usersFavEntity) }
-    }
 }

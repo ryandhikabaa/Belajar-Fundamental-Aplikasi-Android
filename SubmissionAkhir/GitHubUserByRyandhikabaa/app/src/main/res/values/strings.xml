@@ -21,6 +21,9 @@ Suspendisse euismod urna id quam feugiat, ac lacinia massa auctor. Aenean lobort
     <string name="non_followers">Tidak Memiliki Followers</string>
     <string name="non_following">Tidak Memiliki Following</string>
 
+    <string name="action_favorite">Favorite</string>
+    <string name="action_unfavorite">Unfavorite</string>
+
     <string name="dark_mode">Dark Mode</string>
 
 
