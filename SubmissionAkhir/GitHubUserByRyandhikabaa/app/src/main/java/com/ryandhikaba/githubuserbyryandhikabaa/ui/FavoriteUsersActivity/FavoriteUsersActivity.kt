@@ -12,6 +12,8 @@ import com.ryandhikaba.githubuserbyryandhikabaa.databinding.ActivityFavoriteUser
 import com.ryandhikaba.githubuserbyryandhikabaa.ui.DetailUserActivity.DetailUserActivity
 import com.ryandhikaba.githubuserbyryandhikabaa.ui.ViewModelFactory.ViewModelFactory
 import com.ryandhikaba.githubuserbyryandhikabaa.ui.adapter.UsersAdapter
+import com.ryandhikaba.githubuserbyryandhikabaa.utils.SettingPreferences
+import com.ryandhikaba.githubuserbyryandhikabaa.utils.dataStore
 
 class FavoriteUsersActivity : AppCompatActivity() {
 
@@ -66,7 +68,7 @@ class FavoriteUsersActivity : AppCompatActivity() {
     }
 
     private fun obtainViewModel(activity: AppCompatActivity): FavoriteUsersViewModel {
-        val factory = ViewModelFactory.getInstance(activity.application)
+        val factory = ViewModelFactory.getInstance(activity.application, SettingPreferences.getInstance(application.dataStore))
         return ViewModelProvider(activity, factory).get(FavoriteUsersViewModel::class.java)
     }
 }

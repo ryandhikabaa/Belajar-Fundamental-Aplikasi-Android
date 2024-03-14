@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.CompoundButton
 import android.widget.SearchView
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -18,12 +20,19 @@ import com.ryandhikaba.githubuserbyryandhikabaa.data.response.ItemsItem
 import com.ryandhikaba.githubuserbyryandhikabaa.databinding.ActivityMainBinding
 import com.ryandhikaba.githubuserbyryandhikabaa.ui.DetailUserActivity.DetailUserActivity
 import com.ryandhikaba.githubuserbyryandhikabaa.ui.FavoriteUsersActivity.FavoriteUsersActivity
+import com.ryandhikaba.githubuserbyryandhikabaa.ui.SplashScreen.SplashScreenViewModel
+import com.ryandhikaba.githubuserbyryandhikabaa.ui.ViewModelFactory.ViewModelFactory
+import com.ryandhikaba.githubuserbyryandhikabaa.utils.SettingPreferences
+import com.ryandhikaba.githubuserbyryandhikabaa.utils.dataStore
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
     private var username: String = "a"
+
+    private lateinit var mainViewModel: MainViewModel
+
 
     companion object {
         private const val TAG = "RBA:MainActivity ||  "
@@ -34,9 +43,20 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val mainViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(
-            MainViewModel::class.java)
+//        val mainViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(
+//            MainViewModel::class.java)
 
+        mainViewModel = obtainViewModel(this@MainActivity)
+
+        mainViewModel.getThemeSettings().observe(this) { isDarkModeActive: Boolean ->
+            if (isDarkModeActive) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                binding.switchTheme.isChecked = true
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                binding.switchTheme.isChecked = false
+            }
+        }
         mainViewModel.listItem.observe(this) { usersList ->
             setUsersData(usersList)
         }
@@ -56,8 +76,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+//        binding.switchTheme.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
+//            mainViewModel.saveThemeSetting(isChecked)
+//        }
+
 
         with(binding) {
+
+
             val layoutManager = LinearLayoutManager(this@MainActivity)
             binding.rvusers.layoutManager = layoutManager
             val itemDecoration = DividerItemDecoration(this@MainActivity, layoutManager.orientation)
@@ -98,6 +124,14 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this@MainActivity, FavoriteUsersActivity::class.java))
             })
 
+            switchTheme.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
+                mainViewModel.saveThemeSetting(isChecked)
+            }
+
+            var appVersion = applicationContext.packageManager.getPackageInfo(applicationContext.packageName, 0).versionName
+
+            tvAppVersion.text = "Apps Ver. : $appVersion"
+
         }
 
     }
@@ -122,6 +156,11 @@ class MainActivity : AppCompatActivity() {
         currentFocus?.let {
             inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
         }
+    }
+
+    private fun obtainViewModel(activity: AppCompatActivity): MainViewModel {
+        val factory = ViewModelFactory.getInstance(application, SettingPreferences.getInstance(application.dataStore))
+        return ViewModelProvider(this, factory).get(MainViewModel::class.java)
     }
 
 }

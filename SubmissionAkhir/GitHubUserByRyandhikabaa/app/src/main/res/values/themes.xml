@@ -3,6 +3,7 @@
     <style name="Base.Theme.GitHubUserByRyandhikabaa" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="materialSwitchStyle">@style/Widget.App.Switch</item>
     </style>
 
     <style name="Theme.GitHubUserByRyandhikabaa" parent="Base.Theme.GitHubUserByRyandhikabaa">
@@ -13,4 +14,14 @@
         <item name="android:windowActionBarOverlay">true</item>
         <item name="windowActionBarOverlay">true</item>
     </style>
+
+    <style name="Widget.App.Switch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Switch</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Switch" parent="">
+        <item name="colorPrimary">@color/colorRed</item>
+        <item name="colorSurfaceVariant">@color/colorGreen</item>
+    </style>
+
 </resources>

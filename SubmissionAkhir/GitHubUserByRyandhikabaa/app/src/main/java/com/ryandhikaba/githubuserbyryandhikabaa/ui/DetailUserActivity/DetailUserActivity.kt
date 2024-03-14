@@ -19,6 +19,8 @@ import com.ryandhikaba.githubuserbyryandhikabaa.database.UsersFavEntity
 import com.ryandhikaba.githubuserbyryandhikabaa.databinding.ActivityDetailUserBinding
 import com.ryandhikaba.githubuserbyryandhikabaa.ui.ViewModelFactory.ViewModelFactory
 import com.ryandhikaba.githubuserbyryandhikabaa.ui.DetailUserActivity.TabDetailUser.SectionsPagerAdapter
+import com.ryandhikaba.githubuserbyryandhikabaa.utils.SettingPreferences
+import com.ryandhikaba.githubuserbyryandhikabaa.utils.dataStore
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -146,7 +148,7 @@ class DetailUserActivity : AppCompatActivity() {
     private fun showLoading(state: Boolean) { binding.divLoading.visibility = if (state) View.VISIBLE else View.GONE }
 
     private fun obtainViewModel(activity: AppCompatActivity): DetailUserViewModel {
-        val factory = ViewModelFactory.getInstance(activity.application)
+        val factory = ViewModelFactory.getInstance(activity.application, SettingPreferences.getInstance(application.dataStore))
         return ViewModelProvider(activity, factory).get(DetailUserViewModel::class.java)
     }
 
